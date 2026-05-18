@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>ระบบลงทะเบียนออนไลน์ - OXFIGHT CENTER</title>
+  <title>Online Registration - OXFIGHT CENTER</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,7 +21,7 @@
     .form-control, .form-select { min-height: 50px; border-radius: 14px; border: 1px solid #d7e2f2; }
     .btn-submit { background: linear-gradient(135deg, #1976d2, #071f54); border: none; padding: 15px; border-radius: 999px; width: 100%; color: white; font-weight: 800; transition: 0.2s; }
     .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
-    .confirm-label { font-weight: 800; color: #52637a; width: 130px; display: inline-block; }
+    .confirm-label { font-weight: 800; color: #52637a; width: 150px; display: inline-block; }
   </style>
 </head>
 <body>
@@ -43,45 +43,51 @@
 
       <div class="header">
         <img src="https://knfhgytkfshdmfdieczx.supabase.co/storage/v1/object/public/pic/OXYFIGHT_CENTER.png" alt="OXFIGHT CENTER LOGO">
-        <h4 class="mt-3 fw-bold text-primary">ระบบลงทะเบียนเข้ารับการฝึกอบรมออนไลน์</h4>
-        <p class="text-muted small">กรุณากรอกข้อมูลส่วนบุคคลให้ถูกต้องเพื่อใช้ในการออกวุฒิบัตร</p>
+        <h4 class="mt-3 fw-bold text-primary">Online Registration System</h4>
+        <p class="text-muted small">กรุณากรอกข้อมูลส่วนบุคคลเป็นภาษาอังกฤษเพื่อใช้ในการออกวุฒิบัตรสากล</p>
       </div>
 
       <form id="regForm" onkeydown="return event.key != 'Enter';">
         <div class="row">
           <div class="col-md-4 mb-3">
-            <label class="form-label">คำนำหน้าชื่อ</label>
+            <label class="form-label">Prefix (คำนำหน้า)</label>
             <select class="form-select" id="inp_prefix" required>
-              <option value="">เลือก...</option>
-              <option value="นาย">นาย</option>
-              <option value="นาง">นาง</option>
-              <option value="นางสาว">นางสาว</option>
+              <option value="">Select...</option>
+              <option value="Mr.">Mr.</option>
+              <option value="Mrs.">Mrs.</option>
+              <option value="Ms.">Ms.</option>
             </select>
           </div>
           <div class="col-md-8 mb-3">
-            <label class="form-label">ชื่อ - นามสกุล (ภาษาไทย)</label>
-            <input type="text" class="form-control" id="inp_name" required placeholder="กรอกชื่อและนามสกุลจริง">
+            <label class="form-label">Full Name (ภาษาอังกฤษ ตัวพิมพ์ใหญ่)</label>
+            <input type="text" class="form-control" id="inp_name" required placeholder="FIRSTNAME LASTNAME" pattern="[A-Za-z\s]+">
           </div>
         </div>
         
         <div class="mb-3">
-          <label class="form-label">เบอร์โทรศัพท์ติดต่อ</label>
+          <label class="form-label">Phone Number (เบอร์โทรศัพท์ติดต่อ)</label>
           <input type="tel" class="form-control" id="inp_phone" required placeholder="08XXXXXXXX" pattern="[0-9]{9,10}">
         </div>
         
         <div class="mb-3">
-          <label class="form-label">อีเมลติดต่อ <span class="text-danger small">(แนะนำให้ใช้ @gmail.com เท่านั้น)</span></label>
+          <label class="form-label">Email Address <span class="text-danger small">(แนะนำให้ใช้ @gmail.com เท่านั้น)</span></label>
           <input type="email" class="form-control" id="inp_email" required placeholder="example@gmail.com">
         </div>
         
         <div class="mb-4">
-          <label class="form-label">หลักสูตรและรอบวันที่ต้องการเข้าอบรม</label>
+          <label class="form-label">Course & Training Session (หลักสูตรและรอบจัดอบรม)</label>
           <select class="form-select" id="date" required>
             <option value="">กำลังโหลดรายการหลักสูตรจากศูนย์การเรียนรู้...</option>
           </select>
         </div>
         
-        <button type="button" class="btn btn-submit shadow-sm fs-5" onclick="showConfirm()">ลงทะเบียนเข้าร่วมอบรม</button>
+        <div class="background-color: #fff9eb; border-radius: 12px; padding: 15px; margin-bottom: 25px; border: 1px solid #ffeeba; background-color: #fff9eb;">
+          <p class="margin: 0; font-size: 14px; color: #92400e; line-height: 1.5; margin: 0;">
+            <i class="fas fa-info-circle me-1"></i> <b>💡 ข้อแนะนำการเข้าร่วมฝึกอบรม:</b> กรุณาแต่งกายสุภาพ พร้อมฝึก (กางเกงขายาว) และมาถึงก่อนเวลาเริ่มงานอย่างน้อย 15 นาที
+          </p>
+        </div>
+        
+        <button type="button" class="btn btn-submit shadow-sm fs-5" onclick="showConfirm()">Register Now</button>
       </form>
     </div>
   </main>
@@ -125,18 +131,17 @@
         if (error) throw error;
         
         loadedSessions = sessions;
-        dateSelect.innerHTML = '<option value="">-- เลือกหลักสูตรและรอบวันเวลา --</option>';
+        dateSelect.innerHTML = '<option value="">-- Select Course & Session --</option>';
         
         sessions.forEach(session => {
           const option = document.createElement('option');
           option.value = session.id; 
-          let statusText = `(ว่าง ${session.available_seats}/${session.max_seats} ที่นั่ง)`;
+          let statusText = `(Available ${session.available_seats}/${session.max_seats} seats)`;
           if (session.available_seats <= 0) { 
             option.disabled = true; 
-            statusText = `(ที่นั่งเต็มแล้ว)`; 
+            statusText = `(Full)`; 
           }
           
-          // แสดงผลโดยดึงทั้งชื่อหลักสูตร (name) และรอบวันที่ (date) ออกมาแสดงอย่างลงตัว
           option.textContent = `📘 [${session.course_key}] ${session.name} - ${session.date} ${statusText}`;
           dateSelect.appendChild(option);
         });
@@ -146,24 +151,28 @@
       }
     }
 
-    // 2. แสดงป๊อปอัพยืนยันความถูกต้องของข้อมูล
+    // 2. แสดงป๊อปอัพยืนยันความถูกต้องของข้อมูล (ป้ายกำกับเป็นไทยเพื่อความชัดเจน เนื้อหาเป็น ENG)
     function showConfirm() {
       const form = document.getElementById('regForm');
       const emailInput = document.getElementById('inp_email');
+      const nameInput = document.getElementById('inp_name');
+      
       emailInput.value = emailInput.value.trim();
+      // บังคับเปลี่ยนชื่อ-นามสกุลอังกฤษให้เป็นตัวพิมพ์ใหญ่ทั้งหมดอัตโนมัติเพื่อความสวยงามบนใบประกาศ
+      nameInput.value = nameInput.value.trim().toUpperCase();
       
       if(!form.checkValidity()) { form.reportValidity(); return; }
 
       const prefix = document.getElementById('inp_prefix').value;
-      const name = document.getElementById('inp_name').value;
+      const name = nameInput.value;
       const selectedSession = loadedSessions.find(s => s.id == document.getElementById('date').value);
 
       document.getElementById('confirmData').innerHTML = `
-        <p class="mb-2"><span class="confirm-label">ชื่อ - นามสกุล:</span> <b class="text-dark">${prefix}${name}</b></p>
+        <p class="mb-2"><span class="confirm-label">Prefix & Full Name:</span> <b class="text-dark">${prefix} ${name}</b></p>
         <p class="mb-2"><span class="confirm-label">เบอร์โทรศัพท์:</span> <b class="text-dark">${document.getElementById('inp_phone').value}</b></p>
         <p class="mb-2"><span class="confirm-label">อีเมลติดต่อ:</span> <b class="text-dark">${emailInput.value}</b></p>
         <hr>
-        <p class="mb-1 text-muted small fw-bold">หลักสูตรศึกษาอบรมที่เลือก [${selectedSession.course_key}]:</p>
+        <p class="mb-1 text-muted small fw-bold">หลักสูตรจัดอบรมที่เลือก [${selectedSession.course_key}]:</p>
         <div class="p-3 bg-light border text-center fw-bold text-primary rounded-3 fs-6">
             ${selectedSession.name}<br>
             <span class="text-muted small fw-normal">ตารางจัด: ${selectedSession.date}</span>
@@ -171,10 +180,9 @@
       confirmModal.show();
     }
 
-    // 3. กดยืนยันบันทึกข้อมูลหลักลง Supabase และยิงคู่ขนานไปหา GAS
+    // 3. กดยืนยันบันทึกข้อมูลหลักลง Supabase และยิงคู่ขนานไปหา GAS Gateway
     async function submitForm() {
       const btn = document.getElementById('confirmBtn');
-      // ล็อกปุ่มป้องกันการกดซ้ำซ้อน
       btn.disabled = true; 
       btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> กำลังบันทึกข้อมูล...';
 
@@ -190,10 +198,10 @@
         if (checkError) throw checkError;
         if (currentSession.available_seats <= 0) throw new Error("ขออภัยด้วยครับ รอบการอบรมหลักสูตรนี้ที่นั่งเต็มแล้ว ณ จังหวะที่คุณกดยืนยัน");
 
-        // ด่านที่ 2: บันทึกข้อมูลเข้าตาราง registrations บน Supabase
+        // ด่านที่ 2: บันทึกข้อมูลเข้าตาราง registrations บน Supabase (เก็บค่าเป็นข้อมูลอังกฤษ)
         const { data: insertedData, error: insertError } = await supabaseClient.from('registrations').insert([{ prefix, full_name: fullName, phone, email, session_id: parseInt(sessionId) }]).select('id').single();
         if (insertError) throw insertError;
-        const generatedRegId = insertedData.id; // รหัส 6 หลักสุ่มอัตโนมัติจาก DB
+        const generatedRegId = insertedData.id; 
 
         // ด่านที่ 3: สั่งหักลดโควตาที่นั่งว่างของรอบนั้นในระบบลง 1 ที่นั่ง
         await supabaseClient.from('sessions').update({ available_seats: currentSession.available_seats - 1 }).eq('id', sessionId);
@@ -212,7 +220,7 @@
             "phone": phone, 
             "email": email, 
             "sessionName": fullSessionString,
-            "courseKey": currentSession.course_key // คีย์ย่อ เช่น STB, BLS, FOST สำหรับใช้สลับแท็บชีต
+            "courseKey": currentSession.course_key 
           })
         });
 
