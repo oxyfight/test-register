@@ -219,13 +219,13 @@
 
       document.getElementById('confirmData').innerHTML = `
         <div class="p-3 bg-white border rounded-3 shadow-sm">
-          <p class="mb-2"><span class="confirm-label text-muted small">Prefix & Full Name:</span> <b class="text-dark fs-5">${prefix} ${name}</b></p>
+          <p class="mb-2"><span class="confirm-label text-muted small">Name:</span> <b class="text-dark fs-5">${prefix} ${name}</b></p>
           <p class="mb-2"><span class="confirm-label text-muted small">Phone Number:</span> <b class="text-dark">${document.getElementById('inp_phone').value}</b></p>
           <p class="mb-0"><span class="confirm-label text-muted small">Email Address:</span> <b class="text-dark">${emailInput.value}</b></p>
         </div>
         <div class="p-3 bg-light border text-center fw-bold text-primary rounded-3 fs-6 mt-2">
             📘 Course: ${selectedSession.name}<br>
-            <span class="text-muted small fw-normal">Schedule: ${selectedSession.date}</span>
+            <span class="text-muted small fw-normal">รอบการอบรม: ${selectedSession.date}</span>
         </div>`;
       confirmModal.show();
     }
