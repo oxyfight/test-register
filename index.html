@@ -81,7 +81,7 @@
           </select>
         </div>
         
-        <div class="background-color: #fff9eb; border-radius: 12px; padding: 15px; margin-bottom: 25px; border: 1px solid #ffeeba; background-color: #fff9eb;">
+        <div class="border rounded-12 p-3 mb-4" style="background-color: #fff9eb; border-radius: 14px; border: 1px solid #ffeeba;">
           <p class="margin: 0; font-size: 14px; color: #92400e; line-height: 1.5; margin: 0;">
             <i class="fas fa-info-circle me-1"></i> <b>💡 ข้อแนะนำการเข้าร่วมฝึกอบรม:</b> กรุณาแต่งกายสุภาพ พร้อมฝึก (กางเกงขายาว) และมาถึงก่อนเวลาเริ่มงานอย่างน้อย 15 นาที
           </p>
@@ -92,18 +92,64 @@
     </div>
   </main>
 
-  <!-- Modal ตรวจสอบความถูกต้องข้อมูล -->
+  <!-- Modal ตรวจสอบข้อมูล ควบคู่การยินยอม PDPA & Privacy Notice -->
   <div class="modal fade" id="confirmModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content" style="border-radius: 20px; overflow: hidden; border: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content" style="border-radius: 20px; overflow: hidden; border: none; box-shadow: 0 20px 50px rgba(0,0,0,0.15);">
         <div class="modal-header bg-primary text-white py-3">
-          <h5 class="modal-title fw-bold"><i class="fas fa-user-check me-2"></i>ตรวจสอบข้อมูลการลงทะเบียน</h5>
+          <h5 class="modal-title fw-bold"><i class="fas fa-file-signature me-2"></i>Review Information & Privacy Consent</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body p-4" id="confirmData"></div>
-        <div class="modal-footer bg-light border-top-0">
-          <button type="button" class="btn btn-link text-muted text-decoration-none fw-bold" data-bs-dismiss="modal">แก้ไขข้อมูล</button>
-          <button type="button" class="btn btn-primary px-4 rounded-pill fw-bold" id="confirmBtn" onclick="submitForm()">ยืนยันข้อมูลข้อมูล</button>
+        
+        <div class="modal-body p-4" style="max-height: 70vh; overflow-y: auto;">
+          <!-- ส่วนที่ 1: ตรวจสอบข้อมูลความถูกต้อง -->
+          <h6 class="fw-bold text-primary mb-3"><i class="fas fa-user me-1"></i> 1. ตรวจสอบข้อมูลการสมัครของท่าน</h6>
+          <div id="confirmData" class="mb-4"></div>
+          
+          <hr class="my-4">
+
+          <!-- ส่วนที่ 2: ข้อความทางกฎหมาย PDPA Privacy Notice -->
+          <h6 class="fw-bold text-primary mb-2"><i class="fas fa-shield-alt me-1"></i> 2. นโยบายคุ้มครองข้อมูลส่วนบุคคล (Privacy Notice)</h6>
+          <div class="p-3 bg-light rounded-3 mb-3 small text-muted border" style="max-height: 180px; overflow-y: auto; line-height: 1.6;">
+            <p class="fw-bold text-dark mb-1">ศูนย์ฝึกอบรม OXFIGHT CENTER ขอแจ้งรายละเอียดการประมวลผลข้อมูลส่วนบุคคลให้ท่านทราบดังนี้:</p>
+            <p><b>วัตถุประสงค์การจัดเก็บ:</b> เรามีความจำเป็นต้องจัดเก็บและใช้ข้อมูลส่วนบุคคลของท่าน (คำนำหน้าชื่อ, ชื่อ-นามสกุลภาษาอังกฤษ, เบอร์โทรศัพท์ และอีเมล) เพื่อวัตถุประสงค์ในการตรวจสอบสิทธิ์ ดำเนินการจัดทำระบบคิวงาน ออกวุฒิบัตรดิจิทัล (E-Certificate) และส่งมอบข้อมูลคิวอาร์โค้ดผ่านทางอีเมลเพื่อใช้รายงานตัวเข้างานจริงตามฐานสัญญา</p>
+            <p><b>⚠️ การบันทึกภาพและวิดีโอ:</b> ในระหว่างการจัดการฝึกอบรมวิชาปฏิบัติการจริง จะมีการบันทึกภาพนิ่ง ภาพเคลื่อนไหว และวิดีโอของผู้เข้ารับการอบรม โดยมีวัตถุประสงค์เพื่อใช้ในการทำสื่อประชาสัมพันธ์ สรุปกิจกรรม สื่อการเรียนการสอน และโฆษณาเผยแพร่ผ่านช่องทางออนไลน์/โซเชียลมีเดียหลักของศูนย์ฝึก</p>
+            <p><b>ระยะเวลาการจัดเก็บ:</b> ศูนย์ฝึกจะทำการจัดเก็บข้อมูลทั่วไปของท่านไว้ในระบบปลอดภัยเป็นระยะเวลา 3 ปี เพื่อประโยชน์ในการตรวจสอบสิทธิ์ย้อนหลัง สำหรับภาพถ่ายและวิดีโอเพื่อการประชาสัมพันธ์จะจัดเก็บไว้ตลอดระยะเวลาการดำเนินงานของศูนย์ฝึก เว้นแต่มีการแจ้งเพิกถอนความยินยอม</p>
+            <p><b>สิทธิ์ของเจ้าของข้อมูล:</b> ท่านมีสิทธิ์ในการขอเข้าถึง ขอแก้ไข หรือขอให้ลบข้อมูลส่วนบุคคล รวมถึงสามารถแจ้งลบภาพถ่าย/วิดีโอที่มีใบหน้าของท่านออกจากสื่อประชาสัมพันธ์ของศูนย์ฝึกได้ทุกเมื่อ โดยติดต่อเจ้าหน้าที่ควบคุมข้อมูลของระบบ</p>
+          </div>
+
+          <!-- ส่วนที่ 3: บล็อกกล่องติ๊กเลือกให้ความยินยอม (เรียงลำดับดักช่องโหว่ทางกฎหมาย) -->
+          <div class="p-3 rounded-3" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
+            
+            <!-- บล็อกที่ 1: ติ๊กเลือกอย่างอิสระ (เรื่องภาพถ่าย/วิดีโอประชาสัมพันธ์ - ขึ้นก่อนเพื่อเน้นย้ำความชัดเจน) -->
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="chk_marketing_consent">
+              <label class="form-check-label small fw-bold text-primary" for="chk_marketing_consent" style="cursor: pointer;">
+                (ยินยอม) ฉันให้ความยินยอมแก่ OXFIGHT CENTER ในการบันทึกภาพถ่าย ภาพเคลื่อนไหว และวิดีโอของฉันในระหว่างรับการฝึกอบรม เพื่อนำไปใช้ในการประชาสัมพันธ์และเผยแพร่ผ่านสื่อต่างๆ ของศูนย์ฝึก
+              </label>
+              <div class="form-text text-muted mt-1" style="font-size: 11px; padding-left: 24px;">
+                *ท่านสามารถเลือกไม่ยินยอมในช่องนี้ได้ โดยไม่มีผลกระทบต่อสิทธิ์ในการเข้ารับรายงานตัวฝึกอบรมหรือการรับวุฒิบัตรใดๆ ทั้งสิ้น
+              </div>
+            </div>
+
+            <hr class="my-2" style="border-top: 1px dashed #cbd5e1;">
+
+            <!-- บล็อกที่ 2: บล็อกบังคับติ๊ก (ฐานสัญญาเพื่อดำเนินการจัดฝึกอบรมและออกใบประกาศ) -->
+            <div class="form-check mt-3">
+              <input class="form-check-input" type="checkbox" id="chk_required_notice" onchange="validateConsentState()">
+              <label class="form-check-label small fw-bold text-dark" for="chk_required_notice" style="cursor: pointer;">
+                <span class="text-danger">*</span> ฉันได้อ่านและรับทราบนโยบายความเป็นส่วนตัวข้างต้น และ "ยินยอม" ให้ศูนย์ฝึกประมวลผลข้อมูลส่วนบุคคลเพื่อการออกใบประกาศและการจัดการอบรม (จำเป็นต้องเลือกเพื่อรับสิทธิ์เข้าเรียน)
+              </label>
+            </div>
+            
+          </div>
+        </div>
+
+        <div class="modal-footer bg-light border-top-0 py-3">
+          <button type="button" class="btn btn-link text-muted text-decoration-none fw-bold" data-bs-dismiss="modal">Go Back & Edit</button>
+          <button type="button" class="btn btn-primary px-4 rounded-pill fw-bold" id="confirmBtn" onclick="submitForm()" disabled>
+            <i class="fas fa-check-circle me-1"></i> Confirm & Register
+          </button>
         </div>
       </div>
     </div>
@@ -151,15 +197,14 @@
       }
     }
 
-    // 2. แสดงป๊อปอัพยืนยันความถูกต้องของข้อมูล (ป้ายกำกับเป็นไทยเพื่อความชัดเจน เนื้อหาเป็น ENG)
+    // 2. แสดงป๊อปอัพยินยอมข้อตกลงและตรวจสอบความถูกต้องก่อนบันทึก
     function showConfirm() {
       const form = document.getElementById('regForm');
       const emailInput = document.getElementById('inp_email');
       const nameInput = document.getElementById('inp_name');
       
       emailInput.value = emailInput.value.trim();
-      // บังคับเปลี่ยนชื่อ-นามสกุลอังกฤษให้เป็นตัวพิมพ์ใหญ่ทั้งหมดอัตโนมัติเพื่อความสวยงามบนใบประกาศ
-      nameInput.value = nameInput.value.trim().toUpperCase();
+      nameInput.value = nameInput.value.trim().toUpperCase(); // จัดระเบียบให้อังกฤษตัวพิมพ์ใหญ่ล้วนเพื่อใบประกาศ
       
       if(!form.checkValidity()) { form.reportValidity(); return; }
 
@@ -167,46 +212,73 @@
       const name = nameInput.value;
       const selectedSession = loadedSessions.find(s => s.id == document.getElementById('date').value);
 
+      // รีเซ็ตล้างกล่องติ๊ก PDPA ทุกครั้งก่อนเปิด Modal เพื่อความปลอดภัยสูงสุด
+      document.getElementById('chk_required_notice').checked = false;
+      document.getElementById('chk_marketing_consent').checked = false;
+      document.getElementById('confirmBtn').disabled = true;
+
       document.getElementById('confirmData').innerHTML = `
-        <p class="mb-2"><span class="confirm-label">Prefix & Full Name:</span> <b class="text-dark">${prefix} ${name}</b></p>
-        <p class="mb-2"><span class="confirm-label">เบอร์โทรศัพท์:</span> <b class="text-dark">${document.getElementById('inp_phone').value}</b></p>
-        <p class="mb-2"><span class="confirm-label">อีเมลติดต่อ:</span> <b class="text-dark">${emailInput.value}</b></p>
-        <hr>
-        <p class="mb-1 text-muted small fw-bold">หลักสูตรจัดอบรมที่เลือก [${selectedSession.course_key}]:</p>
-        <div class="p-3 bg-light border text-center fw-bold text-primary rounded-3 fs-6">
-            ${selectedSession.name}<br>
-            <span class="text-muted small fw-normal">ตารางจัด: ${selectedSession.date}</span>
+        <div class="p-3 bg-white border rounded-3 shadow-sm">
+          <p class="mb-2"><span class="confirm-label text-muted small">Prefix & Full Name:</span> <b class="text-dark fs-5">${prefix} ${name}</b></p>
+          <p class="mb-2"><span class="confirm-label text-muted small">Phone Number:</span> <b class="text-dark">${document.getElementById('inp_phone').value}</b></p>
+          <p class="mb-0"><span class="confirm-label text-muted small">Email Address:</span> <b class="text-dark">${emailInput.value}</b></p>
+        </div>
+        <div class="p-3 bg-light border text-center fw-bold text-primary rounded-3 fs-6 mt-2">
+            📘 Course: ${selectedSession.name}<br>
+            <span class="text-muted small fw-normal">Schedule: ${selectedSession.date}</span>
         </div>`;
       confirmModal.show();
     }
 
-    // 3. กดยืนยันบันทึกข้อมูลหลักลง Supabase และยิงคู่ขนานไปหา GAS Gateway
+    // 3. ฟังก์ชันดักสวิตช์เช็คกล่องติ๊กเงื่อนไขบังคับ (ฐานสัญญา)
+    function validateConsentState() {
+      const isRequiredNoticeChecked = document.getElementById('chk_required_notice').checked;
+      const confirmBtn = document.getElementById('confirmBtn');
+      confirmBtn.disabled = !isRequiredNoticeChecked;
+    }
+
+    // 4. กดยืนยันบันทึกข้อมูลหลักลง Supabase (พร้อมส่งประวัติหลักฐานภาพถ่าย) และส่งข้อมูลคู่ขนานไปพ่นลง Sheet
     async function submitForm() {
       const btn = document.getElementById('confirmBtn');
       btn.disabled = true; 
-      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> กำลังบันทึกข้อมูล...';
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Processing...';
 
       const prefix = document.getElementById('inp_prefix').value;
       const fullName = document.getElementById('inp_name').value;
       const phone = document.getElementById('inp_phone').value;
       const email = document.getElementById('inp_email').value;
       const sessionId = document.getElementById('date').value;
+      
+      // ดึงสถานะความยินยอมบันทึกภาพถ่ายและวิดีโอประชาสัมพันธ์หน้างาน (true / false) เพื่อผูกเป็นหลักฐานเก็บลง DB
+      const photoConsentValue = document.getElementById('chk_marketing_consent').checked;
 
       try {
-        // ด่านที่ 1: เช็คโควตาที่นั่งแบบเรียลไทม์วินาทีสุดท้ายก่อนบันทึก
+        // ด่านที่ 1: ตรวจโควตาที่นั่งว่างแบบเรียลไทม์วินาทีสุดท้าย
         const { data: currentSession, error: checkError } = await supabaseClient.from('sessions').select('available_seats, name, date, course_key').eq('id', sessionId).single();
         if (checkError) throw checkError;
         if (currentSession.available_seats <= 0) throw new Error("ขออภัยด้วยครับ รอบการอบรมหลักสูตรนี้ที่นั่งเต็มแล้ว ณ จังหวะที่คุณกดยืนยัน");
 
-        // ด่านที่ 2: บันทึกข้อมูลเข้าตาราง registrations บน Supabase (เก็บค่าเป็นข้อมูลอังกฤษ)
-        const { data: insertedData, error: insertError } = await supabaseClient.from('registrations').insert([{ prefix, full_name: fullName, phone, email, session_id: parseInt(sessionId) }]).select('id').single();
+        // ด่านที่ 2: INSERT บันทึกข้อมูลเข้าตารางหลักของ Supabase พ่วงฟิลด์ photo_consent แนบเป็นหลักฐานทางกฎหมาย
+        const { data: insertedData, error: insertError } = await supabaseClient
+          .from('registrations')
+          .insert([{ 
+            prefix: prefix, 
+            full_name: fullName, 
+            phone: phone, 
+            email: email, 
+            session_id: parseInt(sessionId),
+            photo_consent: photoConsentValue // เก็บหลักฐานประวัติความยินยอมเรียบร้อย
+          }])
+          .select('id')
+          .single();
+          
         if (insertError) throw insertError;
         const generatedRegId = insertedData.id; 
 
-        // ด่านที่ 3: สั่งหักลดโควตาที่นั่งว่างของรอบนั้นในระบบลง 1 ที่นั่ง
+        // ด่านที่ 3: สั่งหักลดจำนวนที่นั่งว่างของรอบนั้นในระบบลง 1 ที่นั่ง
         await supabaseClient.from('sessions').update({ available_seats: currentSession.available_seats - 1 }).eq('id', sessionId);
 
-        // ด่านที่ 4: ยิงข้อมูลคู่ขนานส่งต่อให้ GAS API บันทึกลงตาราง Sheets (แยกแท็บตาม course_key) และส่งเมลแจ้งเตือน
+        // ด่านที่ 4: ยิงข้อมูลแบบข้ามคลาวด์ขนานไปหา GAS API เพื่อคัดแยกรายชื่อลงแผ่นงานและสั่งส่งจดหมายกล่องหรูหรา
         const fullSessionString = `${currentSession.name} (${currentSession.date})`;
         
         fetch(GOOGLE_SHEET_API, {
@@ -224,7 +296,7 @@
           })
         });
 
-        // ปิดหน้าต่างแสดงป๊อปอัพและเปลี่ยนเป็นหน้าสำเร็จรูป
+        // จบกระบวนการสำเร็จ: ปิดม่านป๊อปอัพและแสดงหน้าต่างสัญลักษณ์ความสำเร็จ
         confirmModal.hide();
         document.getElementById('displayResId').innerText = generatedRegId;
         document.getElementById('successOverlay').style.display = 'flex';
@@ -232,7 +304,7 @@
       } catch (err) { 
         alert("ระบบขัดข้อง: " + err.message); 
         btn.disabled = false; 
-        btn.innerHTML = 'ยืนยันข้อมูลข้อมูล'; 
+        validateConsentState(); // ตรวจเช็คคืนสถานะปุ่มส่ง
       }
     }
   </script>
