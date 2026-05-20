@@ -191,7 +191,17 @@
       return selectVal;
     }
 
-    // 1. ดึงรายชื่อหลักสูตรรอบอบรมจากตารางแม่ sessions ที่มีสถานะ Active
+    // ฟังก์ชันสร้างรหัสสุ่ม 8 หลัก (ตัวอักษรพิมพ์ใหญ่ + ตัวเลข)
+    function generate8CharID() {
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let result = "";
+      for (let i = 0; i < 8; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    }
+
+    // ดึงรายชื่อหลักสูตรรอบอบรมจากตารางแม่ sessions ที่มีสถานะ Active
     async function loadSessions() {
       const dateSelect = document.getElementById('date');
       try {
@@ -219,7 +229,7 @@
       }
     }
 
-    // 2. แสดงป๊อปอัพยินยอมข้อตกลงและตรวจสอบความถูกต้องก่อนบันทึก
+    // แสดงป๊อปอัพยินยอมข้อตกลงและตรวจสอบความถูกต้อง
     function showConfirm() {
       const form = document.getElementById('regForm');
       const emailInput = document.getElementById('inp_email');
@@ -235,7 +245,7 @@
       const actualPrefix = getFinalPrefix();
       const selectedSession = loadedSessions.find(s => s.id == document.getElementById('date').value);
 
-      // แปลงคำนำหน้าภาษาอังกฤษ เป็นภาษาไทย
+      // แปลงคำนำหน้าภาษาอังกฤษ เป็นภาษาไทยเพื่อแสดงผล
       let prefixTH = "";
       if (actualPrefix === "Mr.") prefixTH = "นาย";
       else if (actualPrefix === "Mrs.") prefixTH = "นาง";
@@ -267,20 +277,21 @@
       confirmModal.show();
     }
 
-    // 3. ฟังก์ชันดักสวิตช์เช็คกล่องติ๊กเงื่อนไขบังคับ
+    // ดักสวิตช์เช็คกล่องติ๊กเงื่อนไขบังคับ
     function validateConsentState() {
       const isRequiredNoticeChecked = document.getElementById('chk_required_notice').checked;
       const confirmBtn = document.getElementById('confirmBtn');
       confirmBtn.disabled = !isRequiredNoticeChecked;
     }
 
-    // 4. กดยืนยันบันทึกข้อมูลหลัก
+    // กดยืนยันบันทึกข้อมูลหลัก
     async function submitForm() {
       const btn = document.getElementById('confirmBtn');
       btn.disabled = true; 
       btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Processing...';
 
       const actualPrefix = getFinalPrefix();
+      const generatedRegId = generate8CharID(); // 🚀 สร้างรหัสลงทะเบียน 8 หลัก (ตัวอักษร + ตัวเลข)
       
       let prefixTH = "";
       if (actualPrefix === "Mr.") prefixTH = "นาย";
@@ -305,10 +316,11 @@
         if (checkError) throw checkError;
         if (currentSession.available_seats <= 0) throw new Error("ขออภัยด้วยครับ รอบการอบรมหลักสูตรนี้ที่นั่งเต็มแล้ว");
 
-        // บันทึกลง Supabase
-        const { data: insertedData, error: insertError } = await supabaseClient
+        // 🚀 บันทึกลง Supabase โดยนำรหัส 8 หลักใส่เข้าไปที่คอลัมน์ id ตรงๆ
+        const { error: insertError } = await supabaseClient
           .from('registrations')
           .insert([{ 
+            id: generatedRegId, 
             prefix: actualPrefix, 
             full_name_th: fullNameTH, 
             full_name_en: fullNameEN, 
@@ -316,17 +328,15 @@
             email: email, 
             session_id: parseInt(sessionId),
             photo_consent: photoConsentValue 
-          }])
-          .select('id')
-          .single();
+          }]);
           
         if (insertError) throw insertError;
-        const generatedRegId = insertedData.id; 
 
         await supabaseClient.from('sessions').update({ available_seats: currentSession.available_seats - 1 }).eq('id', sessionId);
 
         const fullSessionString = `${currentSession.name} (${currentSession.date})`;
         
+        // 🚀 ส่งไปให้ GAS บันทึกลง Google Sheet แบบ 13 คอลัมน์
         fetch(GOOGLE_SHEET_API, {
           method: "POST",
           mode: "no-cors",
@@ -348,7 +358,7 @@
         document.getElementById('successOverlay').style.display = 'flex';
         document.getElementById('regForm').reset();
         
-        // รีเซ็ตการแสดงผลของช่องอื่นๆ ให้กลับไปซ่อนเหมือนเดิม
+        // รีเซ็ตการแสดงผลของช่อง อื่นๆ
         document.getElementById('other_prefix').style.display = 'none';
         document.getElementById('other_prefix').required = false;
 
