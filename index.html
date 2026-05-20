@@ -49,13 +49,17 @@
       <form id="regForm" onkeydown="return event.key != 'Enter';">
         <div class="row">
           <div class="col-md-4 mb-3">
-            <label class="form-label">คำนำหน้า (Prefix)</label>
-            <select class="form-select" id="inp_prefix" required>
-              <option value="">เลือก...</option>
-              <option value="Mr.">Mr. (นาย)</option>
-              <option value="Mrs.">Mrs. (นาง)</option>
-              <option value="Ms.">Ms. (นางสาว)</option>
+            <label class="form-label">คำนำหน้า <span class="text-muted fw-normal small">(ไม่บังคับ)</span></label>
+            <select class="form-select bg-light" id="inp_prefix" onchange="checkOther(this)">
+              <option value="" selected>ไม่ระบุ (None)</option>
+              <option value="Mr.">นาย (Mr.)</option>
+              <option value="Mrs.">นาง (Mrs.)</option>
+              <option value="Ms.">นางสาว (Ms.)</option>
+              <option value="Master">เด็กชาย (Master)</option>
+              <option value="Miss">เด็กหญิง (Miss)</option>
+              <option value="Other">อื่นๆ (โปรดระบุ)</option>
             </select>
+            <input type="text" id="other_prefix" class="form-control mt-2 border-primary" placeholder="เช่น Dr. / Prof." style="display: none;">
           </div>
           <div class="col-md-8 mb-3">
             <label class="form-label">ชื่อ-นามสกุล (ภาษาไทย)</label>
@@ -167,6 +171,26 @@
 
     window.addEventListener('DOMContentLoaded', loadSessions);
 
+    // ฟังก์ชันซ่อน/แสดงช่องกรอกคำนำหน้าอื่นๆ
+    function checkOther(selectObj) {
+      const otherInput = document.getElementById('other_prefix');
+      if (selectObj.value === 'Other') {
+        otherInput.style.display = 'block';
+        otherInput.required = true;
+      } else {
+        otherInput.style.display = 'none';
+        otherInput.required = false;
+        otherInput.value = '';
+      }
+    }
+
+    // ฟังก์ชันดึงค่าคำนำหน้าจริงที่ผู้ใช้เลือก (รวมถึงกรณีพิมพ์เอง)
+    function getFinalPrefix() {
+      const selectVal = document.getElementById('inp_prefix').value;
+      if (selectVal === 'Other') return document.getElementById('other_prefix').value.trim();
+      return selectVal;
+    }
+
     // 1. ดึงรายชื่อหลักสูตรรอบอบรมจากตารางแม่ sessions ที่มีสถานะ Active
     async function loadSessions() {
       const dateSelect = document.getElementById('date');
@@ -204,22 +228,35 @@
       
       emailInput.value = emailInput.value.trim();
       nameTHInput.value = nameTHInput.value.trim();
-      nameENInput.value = nameENInput.value.trim().toUpperCase(); // จัดระเบียบให้อังกฤษตัวพิมพ์ใหญ่ล้วนเพื่อใบประกาศ
+      nameENInput.value = nameENInput.value.trim().toUpperCase(); 
       
       if(!form.checkValidity()) { form.reportValidity(); return; }
 
-      const prefix = document.getElementById('inp_prefix').value;
+      const actualPrefix = getFinalPrefix();
       const selectedSession = loadedSessions.find(s => s.id == document.getElementById('date').value);
 
-      // รีเซ็ตล้างกล่องติ๊ก PDPA ทุกครั้งก่อนเปิด Modal เพื่อความปลอดภัยสูงสุด
+      // แปลงคำนำหน้าภาษาอังกฤษ เป็นภาษาไทย
+      let prefixTH = "";
+      if (actualPrefix === "Mr.") prefixTH = "นาย";
+      else if (actualPrefix === "Mrs.") prefixTH = "นาง";
+      else if (actualPrefix === "Ms.") prefixTH = "นางสาว";
+      else if (actualPrefix === "Master") prefixTH = "เด็กชาย";
+      else if (actualPrefix === "Miss") prefixTH = "เด็กหญิง";
+      else if (actualPrefix !== "") prefixTH = actualPrefix; 
+
+      // ประกอบร่างชื่อเพื่อแสดงผล (หากเป็นคำนำหน้าพิเศษให้เว้นวรรค 1 ที)
+      const isStandardTH = ["นาย", "นาง", "นางสาว", "เด็กชาย", "เด็กหญิง"].includes(prefixTH);
+      const displayTH = prefixTH + (prefixTH && !isStandardTH ? " " : "") + nameTHInput.value;
+      const displayEN = actualPrefix ? actualPrefix + " " + nameENInput.value : nameENInput.value;
+
       document.getElementById('chk_required_notice').checked = false;
       document.getElementById('chk_marketing_consent').checked = false;
       document.getElementById('confirmBtn').disabled = true;
 
       document.getElementById('confirmData').innerHTML = `
         <div class="p-3 bg-white border rounded-3 shadow-sm">
-          <p class="mb-2"><span class="confirm-label text-muted small">Name (TH):</span> <b class="text-dark fs-5">${prefix} ${nameTHInput.value}</b></p>
-          <p class="mb-2"><span class="confirm-label text-muted small">Name (EN):</span> <b class="text-dark fs-6">${prefix} ${nameENInput.value}</b></p>
+          <p class="mb-2"><span class="confirm-label text-muted small">Name (TH):</span> <b class="text-dark fs-5">${displayTH}</b></p>
+          <p class="mb-2"><span class="confirm-label text-muted small">Name (EN):</span> <b class="text-dark fs-6">${displayEN}</b></p>
           <p class="mb-2"><span class="confirm-label text-muted small">Phone Number:</span> <b class="text-dark">${document.getElementById('inp_phone').value}</b></p>
           <p class="mb-0"><span class="confirm-label text-muted small">Email Address:</span> <b class="text-dark">${emailInput.value}</b></p>
         </div>
@@ -230,46 +267,55 @@
       confirmModal.show();
     }
 
-    // 3. ฟังก์ชันดักสวิตช์เช็คกล่องติ๊กเงื่อนไขบังคับ (ฐานสัญญา)
+    // 3. ฟังก์ชันดักสวิตช์เช็คกล่องติ๊กเงื่อนไขบังคับ
     function validateConsentState() {
       const isRequiredNoticeChecked = document.getElementById('chk_required_notice').checked;
       const confirmBtn = document.getElementById('confirmBtn');
       confirmBtn.disabled = !isRequiredNoticeChecked;
     }
 
-    // 4. กดยืนยันบันทึกข้อมูลหลักลง Supabase (พร้อมส่งประวัติหลักฐานภาพถ่าย) และส่งข้อมูลคู่ขนานไปพ่นลง Sheet
+    // 4. กดยืนยันบันทึกข้อมูลหลัก
     async function submitForm() {
       const btn = document.getElementById('confirmBtn');
       btn.disabled = true; 
       btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Processing...';
 
-      const prefix = document.getElementById('inp_prefix').value;
-      const fullNameTH = document.getElementById('inp_name_th').value;
-      const fullNameEN = document.getElementById('inp_name_en').value;
+      const actualPrefix = getFinalPrefix();
+      
+      let prefixTH = "";
+      if (actualPrefix === "Mr.") prefixTH = "นาย";
+      else if (actualPrefix === "Mrs.") prefixTH = "นาง";
+      else if (actualPrefix === "Ms.") prefixTH = "นางสาว";
+      else if (actualPrefix === "Master") prefixTH = "เด็กชาย";
+      else if (actualPrefix === "Miss") prefixTH = "เด็กหญิง";
+      else if (actualPrefix !== "") prefixTH = actualPrefix;
+
+      const isStandardTH = ["นาย", "นาง", "นางสาว", "เด็กชาย", "เด็กหญิง"].includes(prefixTH);
+      
+      const fullNameTH = prefixTH + (prefixTH && !isStandardTH ? " " : "") + document.getElementById('inp_name_th').value.trim();
+      const fullNameEN = document.getElementById('inp_name_en').value.trim();
+      
       const phone = document.getElementById('inp_phone').value;
       const email = document.getElementById('inp_email').value;
       const sessionId = document.getElementById('date').value;
-      
-      // ดึงสถานะความยินยอมบันทึกภาพถ่ายและวิดีโอประชาสัมพันธ์หน้างาน (true / false) เพื่อผูกเป็นหลักฐานเก็บลง DB
       const photoConsentValue = document.getElementById('chk_marketing_consent').checked;
 
       try {
-        // ด่านที่ 1: ตรวจโควตาที่นั่งว่างแบบเรียลไทม์วินาทีสุดท้าย
         const { data: currentSession, error: checkError } = await supabaseClient.from('sessions').select('available_seats, name, date, course_key').eq('id', sessionId).single();
         if (checkError) throw checkError;
-        if (currentSession.available_seats <= 0) throw new Error("ขออภัยด้วยครับ รอบการอบรมหลักสูตรนี้ที่นั่งเต็มแล้ว ณ จังหวะที่คุณกดยืนยัน");
+        if (currentSession.available_seats <= 0) throw new Error("ขออภัยด้วยครับ รอบการอบรมหลักสูตรนี้ที่นั่งเต็มแล้ว");
 
-        // ด่านที่ 2: INSERT บันทึกข้อมูลเข้าตารางหลักของ Supabase (ใช้ฟิลด์ TH / EN แยกกัน)
+        // บันทึกลง Supabase
         const { data: insertedData, error: insertError } = await supabaseClient
           .from('registrations')
           .insert([{ 
-            prefix: prefix, 
+            prefix: actualPrefix, 
             full_name_th: fullNameTH, 
             full_name_en: fullNameEN, 
             phone: phone, 
             email: email, 
             session_id: parseInt(sessionId),
-            photo_consent: photoConsentValue // เก็บหลักฐานประวัติความยินยอมเรียบร้อย
+            photo_consent: photoConsentValue 
           }])
           .select('id')
           .single();
@@ -277,10 +323,8 @@
         if (insertError) throw insertError;
         const generatedRegId = insertedData.id; 
 
-        // ด่านที่ 3: สั่งหักลดจำนวนที่นั่งว่างของรอบนั้นในระบบลง 1 ที่นั่ง
         await supabaseClient.from('sessions').update({ available_seats: currentSession.available_seats - 1 }).eq('id', sessionId);
 
-        // ด่านที่ 4: ยิงข้อมูลแบบข้ามคลาวด์ขนานไปหา GAS API
         const fullSessionString = `${currentSession.name} (${currentSession.date})`;
         
         fetch(GOOGLE_SHEET_API, {
@@ -289,7 +333,7 @@
           body: new URLSearchParams({ 
             "action": "registerOnline", 
             "id": generatedRegId, 
-            "prefix": prefix, 
+            "prefix": actualPrefix, 
             "fullNameTH": fullNameTH,
             "fullNameEN": fullNameEN,
             "phone": phone, 
@@ -299,15 +343,19 @@
           })
         });
 
-        // จบกระบวนการสำเร็จ: ปิดม่านป๊อปอัพและแสดงหน้าต่างสัญลักษณ์ความสำเร็จ
         confirmModal.hide();
         document.getElementById('displayResId').innerText = generatedRegId;
         document.getElementById('successOverlay').style.display = 'flex';
         document.getElementById('regForm').reset();
+        
+        // รีเซ็ตการแสดงผลของช่องอื่นๆ ให้กลับไปซ่อนเหมือนเดิม
+        document.getElementById('other_prefix').style.display = 'none';
+        document.getElementById('other_prefix').required = false;
+
       } catch (err) { 
         alert("ระบบขัดข้อง: " + err.message); 
         btn.disabled = false; 
-        validateConsentState(); // ตรวจเช็คคืนสถานะปุ่มส่ง
+        validateConsentState(); 
       }
     }
   </script>
